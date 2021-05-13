@@ -1,3 +1,16 @@
-exports.welcomeUser = (req, res) => {
-  res.json({ message: "Welcome to the shopping center"});
+const User = require('../models/user');
+
+exports.signup = (req, res) => {
+  console.log('new user', req.body);
+  const user = new User(req.body);
+  user.save((err, user) => {
+    if (err) {
+      return res.status(400).json({
+        err: 'Invalid user'
+      })
+    }
+    res.json({
+      user
+    });
+  })
 }
