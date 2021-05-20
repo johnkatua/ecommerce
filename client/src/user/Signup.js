@@ -1,8 +1,12 @@
 import React from 'react';
+import { API } from '../config';
+import Layout from '../core/Layout';
 
 const Signup = () => {
   return (
-    <div>Sign up</div>
+      <Layout title='Signup' description='Signup to Node React E-commerce app'>
+        
+      </Layout>
   )
 };
 
