@@ -5,7 +5,7 @@ import Layout from '../core/Layout';
 const Signup = () => {
   return (
       <Layout title='Signup' description='Signup to Node React E-commerce app'>
-        
+        {API}
       </Layout>
   )
 };
