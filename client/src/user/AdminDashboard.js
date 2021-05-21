@@ -22,7 +22,7 @@ const AdminDashboard = () => {
     )
   }
 
-  const AdminInfo = () => {
+  const adminInfo = () => {
     return (
       <div className='card mb-5'>
         <h3 className='card-header'>User Information</h3>
@@ -36,13 +36,13 @@ const AdminDashboard = () => {
   };
 
   return (
-    <Layout title='Dashboard' description={`Happy shopping ${name}`} className='container-fluid'>
+    <Layout title='Dashboard' description={`Welcome back ${name}`} className='container-fluid'>
       <div className='row'>
         <div className='col-3'>
           {userLinks()}
         </div>
         <div className='col-9'>
-          {userInfo()}
+          {adminInfo()}
         </div>
       </div>
     </Layout>
