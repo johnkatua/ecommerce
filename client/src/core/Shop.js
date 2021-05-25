@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCategories } from './ApiCore';
+import Checkbox from './Checkbox';
 import Layout from './Layout';
 
 const Shop = () => {
@@ -25,7 +26,10 @@ const Shop = () => {
     <Layout title='Shop Page' description='My shopping page'>
       <div className="row">
         <div className="col-4">
-          {JSON.stringify(categories)}
+          <h4>Filter by categories</h4>
+          <ul>
+            <Checkbox categories={categories} />
+          </ul>
         </div>
         <div className="col-8">
           right
