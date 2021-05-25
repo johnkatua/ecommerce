@@ -3,9 +3,13 @@ import {Link} from 'react-router-dom';
 import ShowImage from './ShowImage';
 
 const Card = ({product}) => {
+  const styles = {
+    display: 'flex',
+    alignItems: 'stretch',
+  }
   return (
-    <div className='col-4 mb-3'>
-      <div className="card align-items-stretch">
+    <div className='col-4 mb-3' style={styles}>
+      <div className="card">
         <div className="card-header">{product.name}</div>
           <div className="card-body">
             <ShowImage item={product} url='product' />
