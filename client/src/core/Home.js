@@ -32,8 +32,9 @@ const Home = () => {
 
   useEffect(() => {
     loadProductsBySell();
-    loadProductsByArrival()
-  }, [])
+    loadProductsByArrival();
+  }, []);
+
   return (
     <div>
       <Layout title='Home page' description='Node react e-commerce app' className='container-fluid'>
