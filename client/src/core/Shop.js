@@ -22,13 +22,17 @@ const Shop = () => {
   useEffect(() => {
     showCategories();
   }, []);
+
+  const handleFilters = (filters, filterBy) => {
+    console.log('shop', filters, filterBy);
+  }
   return (
     <Layout title='Shop Page' description='My shopping page'>
       <div className="row">
         <div className="col-4">
           <h4>Filter by categories</h4>
           <ul>
-            <Checkbox categories={categories} />
+            <Checkbox categories={categories} handleFilters={filters => handleFilters(filters, 'category')} />
           </ul>
         </div>
         <div className="col-8">
