@@ -6,6 +6,12 @@ import Layout from './Layout';
 const Shop = () => {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
+  const [myFilters, setMyFilters] = useState({
+    filters: {
+      category: [],
+      price: []
+    }
+  })
 
   const showCategories = () => {
     getCategories()
@@ -24,7 +30,10 @@ const Shop = () => {
   }, []);
 
   const handleFilters = (filters, filterBy) => {
-    console.log('shop', filters, filterBy);
+    const newFilters = {...myFilters};
+    newFilters.filters[filterBy] = filters;
+    setMyFilters(newFilters);
+    console.log('****', newFilters)
   }
   return (
     <Layout title='Shop Page' description='My shopping page'>
@@ -36,7 +45,7 @@ const Shop = () => {
           </ul>
         </div>
         <div className="col-8">
-          right
+          {JSON.stringify(myFilters)}
         </div>
       </div>
     </Layout>
