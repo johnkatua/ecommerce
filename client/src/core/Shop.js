@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCategories, getFilteredProducts } from './ApiCore';
+import Card from './Card';
 import Checkbox from './Checkbox';
 import { prices } from './FixedPrices';
 import Layout from './Layout';
@@ -39,7 +40,7 @@ const Shop = () => {
           setError(data.error)
         }
         else {
-          setFilteredResults(data)
+          setFilteredResults(data.data)
         }
       })
   }
@@ -87,7 +88,14 @@ const Shop = () => {
           </div>
         </div>
         <div className="col-8">
-          {JSON.stringify(filteredResults)}
+          <h2 className="mb-4">Products</h2>
+          <div className="row">
+            {filteredResults.map((product, idx) => {
+              return (
+                  <Card key={idx} product={product} />
+              )
+            })}
+          </div>
         </div>
       </div>
     </Layout>
