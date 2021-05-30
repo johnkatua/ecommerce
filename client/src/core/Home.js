@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Layout from './Layout';
 import {getProducts} from './ApiCore';
 import Card from './Card';
+import Search from './Search';
 
 const Home = () => {
   const [productsBySell, setProductsBySell] = useState([]);
@@ -38,6 +39,7 @@ const Home = () => {
   return (
     <div>
       <Layout title='Home page' description='Node react e-commerce app' className='container-fluid'>
+        <Search />
         <h2 className="mb-4">Finest E-Bookshop</h2>
         <div className="row">
             {productsBySell.map((product, idx)=> {
