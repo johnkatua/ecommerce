@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCategories, list } from './ApiCore';
+import Card from './Card';
 
 const Search = () => {
   const [data, setData] = useState({
@@ -47,6 +48,18 @@ const Search = () => {
 
   const handleChange = (name) => (e) => {
     setData({...data, [name]: e.target.value, searched: false})
+  };
+
+  const searchedResults = (results = []) => {
+    return (
+      <div className='row'>
+        {results.map((product, idx) => {
+          return (
+            <Card key={idx} product={product} />
+          )
+        })}
+      </div>
+    )
   }
 
   const searchForm = () => {
@@ -77,7 +90,9 @@ const Search = () => {
     <div className='row'>
       <div className="container mb-3">
         {searchForm()}
-        {JSON.stringify(results)}
+      </div>
+      <div className="container-fluid mb-3">
+        {searchedResults(results)}
       </div>
     </div>
   )
