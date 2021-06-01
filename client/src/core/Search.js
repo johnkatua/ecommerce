@@ -50,14 +50,28 @@ const Search = () => {
     setData({...data, [name]: e.target.value, searched: false})
   };
 
+  const errorMessage = (searched, results) => {
+    if (searched, results.length > 0) {
+      return `Found ${results.length} Products`
+    }
+    if (searched, results.length < 1) {
+      return `Found No Product`
+    }
+  }
+
   const searchedResults = (results = []) => {
     return (
-      <div className='row'>
-        {results.map((product, idx) => {
-          return (
-            <Card key={idx} product={product} />
-          )
-        })}
+      <div>
+        <h2 className="mt-4 mb-4">
+          {errorMessage(searched, results)}
+        </h2>
+        <div className='row'>
+          {results.map((product, idx) => {
+            return (
+              <Card key={idx} product={product} />
+            )
+          })}
+        </div>
       </div>
     )
   }
@@ -69,7 +83,7 @@ const Search = () => {
           <div className="input-group input-group-lg">
             <div className="input-group-prepend">
               <select className="btn" onChange={handleChange('category')}>
-                <option value="All">Pick a category</option>
+                <option value="All">All categories</option>
                 {categories.map((c, idx) => (
                   <option value={c._id} key={idx}>
                     {c.name}
