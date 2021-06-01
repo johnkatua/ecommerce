@@ -55,4 +55,16 @@ export const list = (params) => {
   .catch(error => {
     console.log(error);
   })
+};
+
+export const getSingleProduct = (productId) => {
+  return fetch(`${API}/product/${productId}`, {
+    method: 'GET'
+  })
+  .then(res => {
+    return res.json();
+  })
+  .catch(error => {
+    console.log(error);
+  })
 }
