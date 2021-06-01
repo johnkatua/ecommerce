@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getCategories } from './ApiCore';
+import { getCategories, list } from './ApiCore';
 
 const Search = () => {
   const [data, setData] = useState({
@@ -27,12 +27,26 @@ const Search = () => {
     loadCategories()
   }, []);
 
-  const searchSubmit = () => {
+  const searchData = () => {
+    if (search) {
+      list({search: search || undefined, category: category })
+        .then(response => {
+          if (response.error) {
+            console.log(response.error)
+          } else {
+            setData({...data, results: response, searched: true})
+          }
+        })
+    }
+  }
 
+  const searchSubmit = (e) => {
+    e.preventDefault();
+    searchData();
   };
 
-  const handleChange = () => {
-
+  const handleChange = (name) => (e) => {
+    setData({...data, [name]: e.target.value, searched: false})
   }
 
   const searchForm = () => {
@@ -41,11 +55,11 @@ const Search = () => {
         <span className="input-group-text">
           <div className="input-group input-group-lg">
             <div className="input-group-prepend">
-              <select className="btn">
+              <select className="btn" onChange={handleChange('category')}>
                 <option value="All">Pick a category</option>
-                {categories.map((category, idx) => (
-                  <option value={category._id} key={idx}>
-                    {category.name}
+                {categories.map((c, idx) => (
+                  <option value={c._id} key={idx}>
+                    {c.name}
                   </option>
                 ))}
               </select>
@@ -63,6 +77,7 @@ const Search = () => {
     <div className='row'>
       <div className="container mb-3">
         {searchForm()}
+        {JSON.stringify(results)}
       </div>
     </div>
   )
