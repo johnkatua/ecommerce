@@ -43,14 +43,22 @@ const Home = () => {
         <h2 className="mb-4">Finest E-Bookshop</h2>
         <div className="row">
             {productsBySell.map((product, idx)=> {
-              return <Card key={idx} product={product} />
+              return (
+                <div key={idx} className='col-4 mb-3'>
+                  <Card product={product} />
+                </div>
+              )
             })}
         </div>
 
         <div className="row">
           <h2 className="mb-4">New Arrival in the E-Bookshop</h2>
           {productsByArrival.map((product, idx)=> {
-            return <Card key={idx} product={product} />
+            return (
+              <div key={idx} className='col-4 mb-3'>
+                <Card product={product} />
+              </div>
+            )
           })}
         </div>
       </Layout>

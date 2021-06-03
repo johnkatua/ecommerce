@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSingleProduct } from './ApiCore';
+import Card from './Card';
 import Layout from './Layout';
 
 const Product = (props) => {
@@ -22,10 +23,9 @@ const Product = (props) => {
     loadProduct(productId);
   }, []);
   return (
-    <Layout title='Product Page' description='View a single product'>
-      <h2 className="mb-4">Single Product</h2>
-      <div className="row">
-        {JSON.stringify(product)}
+    <Layout title={product && product.name} description={product && product.description && product.description.substring(0, 100)}>
+      <div className="product">
+        {product && product.description && <Card product={product} showViewProductButton={false} />}
       </div>
     </Layout>
   )

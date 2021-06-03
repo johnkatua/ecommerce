@@ -51,10 +51,10 @@ const Search = () => {
   };
 
   const errorMessage = (searched, results) => {
-    if (searched, results.length > 0) {
+    if (searched && results.length > 0) {
       return `Found ${results.length} Products`
     }
-    if (searched, results.length < 1) {
+    if (searched && results.length < 1) {
       return `Found No Product`
     }
   }
@@ -65,6 +65,7 @@ const Search = () => {
         <h2 className="mt-4 mb-4">
           {errorMessage(searched, results)}
         </h2>
+
         <div className='row'>
           {results.map((product, idx) => {
             return (
