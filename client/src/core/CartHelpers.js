@@ -27,6 +27,8 @@ export const addItem = (product, next) => {
   }
 };;
 
+
+// returns the number of products in the cart
 export const totalProducts = () => {
   if (typeof window !== 'undefined') {
     if (localStorage.getItem('cart')) {
@@ -34,4 +36,15 @@ export const totalProducts = () => {
     }
   }
   return 0;
+}
+
+
+// gets all items found in the cart
+export const getCart = () => {
+  if (typeof window !== 'undefined') {
+    if (localStorage.getItem('cart')) {
+      return JSON.parse(localStorage.getItem('cart'));
+    }
+  }
+  return [];
 }
