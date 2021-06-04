@@ -37,3 +37,15 @@ body {
   width: 30%;
 }
 
+/*
+* cart-badge
+*/
+
+.cart-badge,
+.cart-badge:hover {
+  border-radius: 2  0px;
+  background-color: lightcoral;
+  font-size: 10px;
+  padding: 2px;
+  font-style: italic;
+}
