@@ -10,7 +10,7 @@ const Cart = () => {
 
   useEffect(() => {
     setProducts(getCart());
-  }, []);
+  }, [products]);
 
   const showProducts = (products) => {
     return (
@@ -19,7 +19,7 @@ const Cart = () => {
         <hr />
         {products.map((product, idx) => {
           return (
-            <Card key={idx} product={product}  showCartButton={false} cartUpdate={true} />
+            <Card key={idx} product={product}  showCartButton={false} cartUpdate={true} showRemoveButton={true} />
           )
         })}
       </div>
