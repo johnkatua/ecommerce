@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import ShowImage from './ShowImage';
 import moment from 'moment';
-import {addItem} from './CartHelpers';
+import {addItem, updateItem} from './CartHelpers';
 
-const Card = ({product, showViewProductButton = true, showCartButton = true}) => {
-  const [redirect, setRedirect] = useState(false)
+const Card = ({product, showViewProductButton = true, showCartButton = true, cartUpdate = false}) => {
+  const [redirect, setRedirect] = useState(false);
+  const [count, setCount] = useState(product.count);
+
   const showViewButton = (showViewProductButton) => {
     return (
       showViewProductButton && (
@@ -35,6 +37,26 @@ const Card = ({product, showViewProductButton = true, showCartButton = true}) =>
       <button onClick={addToCart} className="btn btn-outline-success mt-2 mb-2">
         Add to cart
       </button>
+    )
+  };
+
+  const handleChange = (productId) => (event) => {
+    setCount(event.target.value < 1 ? 1 : event.target.value);
+    if (event.target.value >= 1) {
+      updateItem(productId, event.target.value)
+    }
+  }
+
+  const showCartUpdateOptions = (cartUpdate) => {
+    return cartUpdate && (
+      <div>
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <span className="input-group-text">Adjust Quantity</span>
+          </div>
+          <input type="number" className="form-control" value={count} onChange={handleChange(product._id)} />
+        </div>
+      </div>
     )
   }
 
@@ -66,6 +88,8 @@ const Card = ({product, showViewProductButton = true, showCartButton = true}) =>
               {showViewButton(showViewProductButton)}
 
               {showAddToCartButton(showCartButton)}
+
+              {showCartUpdateOptions(cartUpdate)}
           </div>
           
       </div>
