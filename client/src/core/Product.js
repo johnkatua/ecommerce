@@ -42,8 +42,8 @@ const Product = (props) => {
           <h4>Similar products</h4>
           {relatedProducts.map((product, idx) => {
             return (
-              <div className='mb-3'>
-                <Card key={idx} product={product} showViewProductButton={true} />
+              <div className='mb-3' key={idx}>
+                <Card product={product} showViewProductButton={true} />
               </div>
             )
           })}
