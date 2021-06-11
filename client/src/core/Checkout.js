@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
 import { getBraintreeClientToken, processPayment } from './ApiCore';
 import DropIn from 'braintree-web-drop-in-react';
+import { clearCart } from './CartHelpers';
 
 const Checkout = ({products, setRun = true}) => {
   const [data, setData] = useState({
+    loading: false,
     success: false,
     clientToken: null,
     error: '',
@@ -49,6 +51,7 @@ const Checkout = ({products, setRun = true}) => {
   };
 
   const buyProducts = () => {
+    setData({loading: true});
     // send nonce to your server
     // nonce = data.instance.requestPaymentMethod()
     let nonce;
@@ -63,9 +66,16 @@ const Checkout = ({products, setRun = true}) => {
       }
       processPayment(userId, token, paymentData)
         .then(res => {
-          setData({...data, success: res.success})
+          setData({...data, success: res.success});
+          clearCart(() => {
+            console.log('Payment success, clear cart');
+            setData({loading: false})
+          })
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          console.log(error);
+          setData({loading: false});
+        });
     })
     .catch(error => {
       setData({error: error.message});
@@ -79,7 +89,10 @@ const Checkout = ({products, setRun = true}) => {
         {data.clientToken !== null && products.length > 0 ? (
           <div>
             <DropIn options={{
-              authorization: data.clientToken
+              authorization: data.clientToken,
+              // paypal: {
+              //   flow: 'vault'
+              // }
             }} onInstance={instance => (data.instance = instance)}
              />
             <button onClick={buyProducts} className="btn btn-success btn-block">Pay</button>
@@ -104,11 +117,20 @@ const Checkout = ({products, setRun = true}) => {
         Thanks, your payment was successful!
       </div>
     )
+  };
+
+  const showLoading = (loading) => {
+    return  (
+      loading && (
+        <h2>Loading...</h2>
+      )
+    )
   }
   return (
     <div>
       <h2>Total: Ksh {getTotal()}</h2>
       <br />
+      {showLoading(data.loading)}
       {showError(data.error)}
       {showSuccess(data.success)}
       {showCheckout()}

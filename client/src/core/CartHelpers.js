@@ -75,7 +75,14 @@ export const removeItem = (productId) => {
         cart.splice(idx, 1);
       }
     })
-    localStorage.setItem('cart', JSON.stringify(cart))
+    localStorage.setItem('cart', JSON.stringify(cart));
   }
   return cart;
+};
+
+export const clearCart = (next) => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('cart');
+    next();
+  }
 }
