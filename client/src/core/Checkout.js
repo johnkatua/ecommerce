@@ -5,7 +5,7 @@ import { getBraintreeClientToken, processPayment,createOrder } from './ApiCore';
 import DropIn from 'braintree-web-drop-in-react';
 import { clearCart } from './CartHelpers';
 
-const Checkout = ({products, setRun = true}) => {
+const Checkout = ({products, setRun = f => f, run = undefined}) => {
   const [data, setData] = useState({
     loading: false,
     success: false,
@@ -54,6 +54,8 @@ const Checkout = ({products, setRun = true}) => {
     )   
   };
 
+  let deliveryAddress = data.address;
+
   const buyProducts = () => {
     setData({loading: true});
     // send nonce to your server
@@ -74,12 +76,13 @@ const Checkout = ({products, setRun = true}) => {
             products: products,
             transaction_id: res.transaction.id,
             amount: res.transaction.amount,
-            address: data.address
+            address: deliveryAddress
           };
 
           createOrder(userId, token, createOrderData)
             .then(response => {
               clearCart(() => {
+                setRun(!run); // from parent component
                 console.log('Payment success, clear cart');
                 setData({loading: false, success: true})
               });
