@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
-import { getBraintreeClientToken, processPayment } from './ApiCore';
+import { getBraintreeClientToken, processPayment,createOrder } from './ApiCore';
 import DropIn from 'braintree-web-drop-in-react';
 import { clearCart } from './CartHelpers';
 
@@ -33,6 +33,10 @@ const Checkout = ({products, setRun = true}) => {
   useEffect(() => {
     getToken(userId, token)
   }, []);
+
+  const handleChange = (event) => {
+    setData({...data, address: event.target.value});
+  }
 
   const getTotal = () => {
     return products.reduce((currentVal, nextVal) => {
@@ -66,6 +70,14 @@ const Checkout = ({products, setRun = true}) => {
       }
       processPayment(userId, token, paymentData)
         .then(res => {
+          const createOrderData = {
+            products: products,
+            transaction_id: res.transaction.id,
+            amount: res.transaction.amount,
+            address: data.address
+          };
+
+          createOrder(userId, token, createOrderData)
           setData({...data, success: res.success});
           clearCart(() => {
             console.log('Payment success, clear cart');
@@ -88,6 +100,10 @@ const Checkout = ({products, setRun = true}) => {
       <div onBlur={() => setData({...data, error: ''})} >
         {data.clientToken !== null && products.length > 0 ? (
           <div>
+            <div className="form-group mb-3">
+              <label className="text-muted">Delivery address:</label>
+              <textarea onChange={handleChange} value={data.address} placeholder='Enter your delivery address here...' className="form-control" />
+            </div>
             <DropIn options={{
               authorization: data.clientToken,
               // paypal: {

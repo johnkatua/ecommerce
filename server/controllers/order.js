@@ -1,3 +1,3 @@
 exports.create = (req, res) => {
-  console.log('Create new order', re.body);
+  console.log('Create new order', req.body);
 }
