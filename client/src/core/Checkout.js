@@ -78,11 +78,12 @@ const Checkout = ({products, setRun = true}) => {
           };
 
           createOrder(userId, token, createOrderData)
-          setData({...data, success: res.success});
-          clearCart(() => {
-            console.log('Payment success, clear cart');
-            setData({loading: false})
-          })
+            .then(response => {
+              clearCart(() => {
+                console.log('Payment success, clear cart');
+                setData({loading: false, success: true})
+              });
+            });
         })
         .catch(error => {
           console.log(error);
@@ -138,7 +139,7 @@ const Checkout = ({products, setRun = true}) => {
   const showLoading = (loading) => {
     return  (
       loading && (
-        <h2>Loading...</h2>
+        <h2 className='text-danger'>Loading...</h2>
       )
     )
   }
