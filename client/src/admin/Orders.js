@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Layout from '../core/Layout';
 import { isAuthenticated } from '../auth';
-import { getOrders, getStatusValues } from './ApiAdmin';
+import { getOrders, getStatusValues, updateOrderStatus } from './ApiAdmin';
 import moment from 'moment';
 
 const Orders = () => {
@@ -59,7 +59,14 @@ const Orders = () => {
   };
 
   const handleStatusChange = (e, orderId) => {
-    console.log('Update status');
+    updateOrderStatus(user._id, token, orderId, e.target.value)
+      .then(data => {
+        if(data.err) {
+          console.log('Status not updated')
+        } else {
+          loadOrders()
+        }
+      })
   }
 
   const showStatus = (order) => {
