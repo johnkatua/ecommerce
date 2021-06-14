@@ -44,4 +44,21 @@ export const updateUserLocally = (user, next) => {
       next();
     }
   }
-}
+};
+
+export const getPurchaseHistory = (userId, token) => {
+  return fetch(`${API}/order/by/user/${userId}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => {
+    return res.json()
+  })
+  .catch(error => {
+    return console.log(error);
+  })
+};

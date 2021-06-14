@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../core/Layout';
 import {isAuthenticated} from '../auth/index';
 import {Link} from 'react-router-dom';
+import { getPurchaseHistory } from './ApiUser';
+import moment from 'moment';
 
 const Dashboard = () => {
-  const {user: {_id, name, email, role}} = isAuthenticated();
+  const [history, setHistory] = useState([]);
+
+  const {user: {_id, name, email, role}, token} = isAuthenticated();
+
+  const init = (userId, token) => {
+    console.log(userId)
+    getPurchaseHistory(userId, token)
+      .then(data => {
+        if(data.error) {
+          console.log(data.error)
+        } else {
+          setHistory(data);
+        }
+      })
+  };
+
+  useEffect(() => {
+    init(_id, token)
+  },[])
   
 
   const userLinks = () => {
@@ -37,12 +57,29 @@ const Dashboard = () => {
     )
   };
 
-  const purchaseHistory = () => {
+  const purchaseHistory = (history) => {
     return (
       <div className='card mb-5'>
       <h3 className='card-header'>Purchase history</h3>
         <ul className='list-group'>
-          <li className="list-group-item">history</li>
+          <li className="list-group-item">
+            {history.map((orders, idx) => {
+              return (
+                <div key={idx}>
+                  <hr />
+                  {orders.products.map((product) => {
+                    return (
+                      <div key={product._id} className='mb-3'>
+                        <h6>Product name: {product.name}</h6>
+                        <h6>Product price: ksh{product.price}</h6>
+                        <h6>Purchase date: {moment(product.createdAt).fromNow()}</h6>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })}
+          </li>
         </ul>
       </div>
     )
@@ -55,7 +92,7 @@ const Dashboard = () => {
         </div>
         <div className='col-9'>
           {userInfo()}
-          {purchaseHistory()}
+          {purchaseHistory(history)}
         </div>
       </div>
     </Layout>

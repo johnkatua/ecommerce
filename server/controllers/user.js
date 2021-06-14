@@ -1,5 +1,6 @@
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const User = require('../models/user');
+const {Order} = require('../models/order');
 
 exports.userById = (req, res, next, id) => {
   User.findById(id).exec((err, user) => {
@@ -59,7 +60,7 @@ exports.addOrderToUserHistory = (req, res, next) => {
 };
 
 exports.purchaseHistory = (req, res) => {
-  Orders.find({user: req.profile._id})
+  Order.find({user: req.profile._id})
   .populate('user', '_id name')
   .sort('-createdAt')
   .exec((err, orders) => {
