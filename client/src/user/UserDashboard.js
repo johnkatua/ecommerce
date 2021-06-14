@@ -4,7 +4,8 @@ import {isAuthenticated} from '../auth/index';
 import {Link} from 'react-router-dom';
 
 const Dashboard = () => {
-  const {user: {name, email, role}} = isAuthenticated();
+  const {user: {_id, name, email, role}} = isAuthenticated();
+  
 
   const userLinks = () => {
     return (
@@ -15,7 +16,7 @@ const Dashboard = () => {
               <Link className='nav-link' to='/cart'>Shopping Cart</Link>
             </li>
             <li className="list-group-item">
-              <Link className='nav-link' to='/profile/update'>Update Profile</Link>
+              <Link className='nav-link' to={`/profile/${_id}`}>Update Profile</Link>
             </li>
           </ul>
       </div>
@@ -28,6 +29,7 @@ const Dashboard = () => {
         <h3 className='card-header'>User Information</h3>
         <ul className='list-group'>
           <li className="list-group-item">name: {name}</li>
+          <li className="list-group-item">name: {_id}</li>
           <li className="list-group-item">email: {email}</li>
           <li className="list-group-item">role: {role === 0 ? 'Regular user' : 'Admin'}</li>
         </ul>

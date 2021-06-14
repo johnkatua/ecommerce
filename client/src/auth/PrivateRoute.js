@@ -5,7 +5,7 @@ import {isAuthenticated} from './index';
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
     <Route {...rest} render={props => isAuthenticated() ? (
-      <Component />
+      <Component {...props} />
     ) : (
       <Redirect to={{pathname: '/signin', state: {from: props.location}}} />
     )} />

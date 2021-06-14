@@ -56,8 +56,8 @@ export const updateItem = (productId, count) => {
       cart = JSON.parse(localStorage.getItem('cart'))
     }
     cart.map((product, idx) => {
-      if (product._id === productId) {
-        cart[idx].count = count
+      if(product._id === productId) {
+       cart[idx].count = count
       }
     });
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -71,7 +71,7 @@ export const removeItem = (productId) => {
       cart = JSON.parse(localStorage.getItem('cart'))
     }
     cart.map((product, idx) => {
-      if (product._id === productId) {
+      if(product._id === productId) {
         cart.splice(idx, 1);
       }
     })
