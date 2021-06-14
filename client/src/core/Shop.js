@@ -101,7 +101,7 @@ const Shop = () => {
     return array;
   };
   return (
-    <Layout title='Shop Page' description='My shopping page'>
+    <Layout title='Shop Page' description='My shopping page' className='container-fluid'>
       <div className="row">
         <div className="col-4">
           <h4>Filter by categories</h4>
