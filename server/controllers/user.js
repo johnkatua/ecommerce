@@ -1,3 +1,4 @@
+const { errorHandler } = require('../helpers/dbErrorHandler');
 const User = require('../models/user');
 
 exports.userById = (req, res, next, id) => {
@@ -18,7 +19,7 @@ exports.read = (req, res) => {
   return res.json(req.profile);
 };
 
-exports.update = (req, res) => {
+exports.update = (req, res) => {const { default: Orders } = require('../../client/src/admin/Orders');
   User.findOneAndUpdate({_id: req.profile._id}, {$set: req.body}, {new: true}, (err, user) => {
     if (err) {
       return res.status(400).json({
@@ -54,5 +55,19 @@ exports.addOrderToUserHistory = (req, res, next) => {
       })
     };
     next();
+  })
+};
+
+exports.purchaseHistory = (req, res) => {
+  Orders.find({user: req.profile._id})
+  .populate('user', '_id name')
+  .sort('-createdAt')
+  .exec((err, orders) => {
+    if(err) {
+      return res.status(400).json({
+        error: errorHandler(err)
+      })
+    }
+    res.json(orders)
   })
 }
