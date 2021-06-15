@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../core/Layout';
 import { isAuthenticated } from '../auth';
-import { Link, Redirect } from 'react-router-dom';
-import { createProduct, getCategories } from './ApiAdmin';
+import { Redirect } from 'react-router-dom';
+import { getProduct, getCategories, updateProduct } from './ApiAdmin';
 
-const AddProduct = () => {
+const UpdateProduct = ({match}) => {
     const [values, setValues] = useState({
         name: '',
         description: '',
@@ -38,13 +38,12 @@ const AddProduct = () => {
     } = values;
 
     // load categories and set form data
-    const init = () => {
+    const initCategories = () => {
         getCategories().then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
                 setValues({
-                    ...values,
                     categories: data,
                     formData: new FormData()
                 });
@@ -52,8 +51,31 @@ const AddProduct = () => {
         });
     };
 
+    const init = (productId) => {
+      getProduct(productId)
+        .then(data => {
+          if(data.error) {
+            setValues({...values, error: data.error})
+          } else {
+            // populating the state
+            setValues({
+              ...values,
+              name: data.name,
+              description: data.description,
+              price: data.price,
+              category: data.category._id,
+              shipping: data.shipping,
+              quantity: data.quantity,
+              formData: new FormData()
+            })
+
+            initCategories()
+          }
+        })
+    }
+
     useEffect(() => {
-        init();
+        init(match.params.productId);
     }, []);
 
     const handleChange = name => event => {
@@ -66,7 +88,7 @@ const AddProduct = () => {
         event.preventDefault();
         setValues({ ...values, error: '', loading: true });
 
-        createProduct(user._id, token, formData).then(data => {
+        updateProduct(match.params.productId, user._id, token, formData).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
@@ -80,6 +102,8 @@ const AddProduct = () => {
                     category: '',
                     shipping: '',
                     loading: false,
+                    error: false,
+                    redirectToProfile: true,
                     createdProduct: data.name
                 });
             }
@@ -137,7 +161,7 @@ const AddProduct = () => {
                 <input onChange={handleChange('quantity')} type="number" className="form-control" value={quantity} />
             </div>
 
-            <button className="btn btn-outline-primary mt-2">Create Product</button>
+            <button className="btn btn-outline-primary mt-2">Update Product</button>
         </form>
     );
 
@@ -149,7 +173,7 @@ const AddProduct = () => {
 
     const showSuccess = () => (
         <div className="alert alert-info" style={{ display: createdProduct ? '' : 'none' }}>
-            <h2>{`${createdProduct}`} is updated!</h2>
+            <h2>{`${createdProduct}`} is created!</h2>
         </div>
     );
 
@@ -160,7 +184,13 @@ const AddProduct = () => {
             </div>
         );
 
-    
+    const redirectUser = () => {
+      if(redirectToProfile) {
+          if(!error) {
+              return <Redirect to='/' />
+          }
+      }
+    };
 
     return (
         <Layout title="Add a new product" description={`G'day ${user.name}, ready to add a new product?`}>
@@ -170,10 +200,11 @@ const AddProduct = () => {
                     {showSuccess()}
                     {showError()}
                     {newPostForm()}
+                    {redirectUser()}
                 </div>
             </div>
         </Layout>
     );
 };
 
-export default AddProduct;
+export default UpdateProduct;
